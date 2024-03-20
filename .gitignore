@@ -3,3 +3,9 @@
 
 #Ignore pycache directories
 pycache/
+
+#Ignore my storage file
+file.json
+
+#Ignore some specific personal test files
+test_params_create

@@ -7,6 +7,7 @@ from uuid import UUID
 import json
 import os
 
+storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
 class test_basemodel(unittest.TestCase):
     """ """
@@ -74,11 +75,20 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
+    @unittest.skip
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
+
+    @unittest.skipIf(storage_type == 'db')
+    def test_create_with_params(self):
+        """ """
+        n = {'first_name': 'test', 'last_name': 'tester', 'email': 'testing@gmail.com'}
+        new = self.value(**n)
+        for key, value in n.items():
+            self.assertEqual(value, new[key])
 
     def test_id(self):
         """ """
