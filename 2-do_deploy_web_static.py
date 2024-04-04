@@ -28,9 +28,11 @@ def do_deploy(archive_path):
             .format(archive_filename, extracted_filename)
         )
         run('rm /tmp/{}'.format(archive_filename))
+        sudo('mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}'.format(extracted_filename, extracted_filename))
+        sudo('rm -rf /data/web_static/releases/{}/web_static'.format(extracted_filename))
         sudo('rm -rf /data/web_static/current')
         sudo(
-            'ln -s /data/web_static/current /data/web_static/releases/{}'
+            'ln -s /data/web_static/releases/{} /data/web_static/current'
             .format(extracted_filename)
         )
         return True
