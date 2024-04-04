@@ -16,24 +16,34 @@ def do_deploy(archive_path):
     if not (os.path.exists(archive_path)):
         return False
     try:
+        # Transfer archives
         put(archive_path, '/tmp/')
+
+        # String variables
         archive_filename = run('ls /tmp/ | grep ".tgz"')
         extracted_filename = archive_filename.split('.')[0]
+        path = '/data/web_static/releases'
+
         sudo(
             'mkdir -p /data/web_static/releases/{}'
             .format(extracted_filename)
         )
+        sudo('rm -rf {}/{}'.format(path, extracted_filename))
+        sudo('mkdir {}/{}'.format(path, extracted_filename))
         sudo(
-            'tar -xzf /tmp/{} -C /data/web_static/releases/{}'
-            .format(archive_filename, extracted_filename)
+            'tar -xzf /tmp/{} -C {}/{}'
+            .format(archive_filename, path, extracted_filename)
         )
         run('rm /tmp/{}'.format(archive_filename))
-        sudo('mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}'.format(extracted_filename, extracted_filename))
-        sudo('rm -rf /data/web_static/releases/{}/web_static'.format(extracted_filename))
+        sudo(
+            'mv {}/{}/web_static/* {}/{}'
+            .format(path, extracted_filename, path, extracted_filename)
+        )
+        sudo('rm -rf {}/{}/web_static'.format(path, extracted_filename))
         sudo('rm -rf /data/web_static/current')
         sudo(
-            'ln -s /data/web_static/releases/{} /data/web_static/current'
-            .format(extracted_filename)
+            'ln -s {}/{} /data/web_static/current'
+            .format(path, extracted_filename)
         )
         return True
     except Exception as e:
