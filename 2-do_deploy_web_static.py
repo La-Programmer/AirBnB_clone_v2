@@ -19,7 +19,6 @@ def do_deploy(archive_path):
         put(archive_path, '/tmp/')
         archive_filename = run('ls /tmp/ | grep ".tgz"')
         extracted_filename = archive_filename.split('.')[0]
-        print(archive_filename, extracted_filename)
         sudo(
             'mkdir -p /data/web_static/releases/{}'
             .format(extracted_filename)
@@ -36,5 +35,4 @@ def do_deploy(archive_path):
         )
         return True
     except Exception as e:
-        print("An error occurred: ", e)
         return False
