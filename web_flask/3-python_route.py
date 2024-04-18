@@ -33,5 +33,6 @@ def print_py_default(text="is cool"):
     new_text = text.replace('_', ' ')
     return "Python {}".format(escape(new_text))
 
+
 if __name__ == "__main__":
     app.run(debug='true', host='0.0.0.0')
