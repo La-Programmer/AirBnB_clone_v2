@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -17,6 +18,9 @@ class HBNBCommand(cmd.Cmd):
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+
+    # ENVIRONMENT VARIABLES
+    database = os.environ.get('HBNB_TYPE_STORAGE')
 
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -135,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             new_instance = HBNBCommand.classes[args[0]]()
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -211,17 +215,26 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+            if (self.database != 'db'):
+                objects = storage._FileStorage__objects.items()
+                for k, v in objects:
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
+            else:
+                objects = storage.all(args).items()
+                for k, v in objects:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            if (self.database != 'db'):
+                objects = storage._FileStorage__objects.items()
+            else:
+                objects = storage.all()
+            for k, v in objects:
                 print_list.append(str(v))
 
         print(print_list)
