@@ -1,8 +1,9 @@
 #Ignore python compiled files
 *.pyc
 
-#Ignore pycache directories
+#Ignore pycache directories and venv directory
 pycache/
+venv
 
 #Ignore my storage file
 file.json
