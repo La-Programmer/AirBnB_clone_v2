@@ -67,6 +67,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
+        """Reloads DB session"""
         from models.base_model import BaseModel, Base
         from models.user import User
         from models.place import Place
@@ -77,3 +78,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session)
+
+    def close(self):
+        """I don't know what it does yet"""
+        self.__session.remove()

@@ -234,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
                 objects = storage._FileStorage__objects.items()
             else:
                 objects = storage.all()
-            for k, v in objects:
+            for k, v in objects.items():
                 print_list.append(str(v))
 
         print(print_list)
