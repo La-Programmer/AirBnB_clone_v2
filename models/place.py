@@ -30,8 +30,8 @@ class Place(BaseModel, Base):
     #     """Intialize Place instance"""
     #     self.amenity_ids = []
     __tablename__ = 'places'
-    city_id = Column(String(60), ForeignKey('cities.id'))
-    user_id = Column(String(60), ForeignKey('users.id'))
+    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128))
     description = Column(String(1024), nullable=True)
     number_rooms = Column(Integer, default=0)
