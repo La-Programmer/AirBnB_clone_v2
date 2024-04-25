@@ -39,9 +39,10 @@ class DBStorage:
                     'Review': Review}
 
         result = {}
-        print(cls)
         if (cls is not None):
-            instances = self.__session.query(classes[cls]).all()
+            if (cls.__class__.__name__ == 'str'):
+                cls = classes[cls]
+            instances = self.__session.query(cls).all()
             for instance in instances:
                 key = f'{instance.__class__}.{instance.id}'
                 result[key] = instance

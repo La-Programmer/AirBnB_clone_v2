@@ -9,21 +9,28 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """Returns a list of models currently in storage"""
+        result = {}
+        # print("Running all function")
+        instances = self.__objects
+        # print(instances)
         if cls is None:
-            return FileStorage.__objects
+            for key, value in instances.items():
+                result[key] = value
+                # print("Appeding to result")
         else:
-            result = {}
-            for i in FileStorage.__objects:
-                object = i.split('.')
-                if cls.__name__ == object[0]:
-                    result[i] = FileStorage.__objects[i]
-            return result
+            for key, value in instances.items():
+                class_name = key.split('.')
+                if (class_name[0] == cls):
+                    result[key] = value
+                # result.append(instance)
+        return result
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
         # print(f'New object: {obj.__class__.__name__}.{obj.id}: {obj}')
-        self.all().update({obj.__class__.__name__ + '.' + obj.id: obj})
+        # self.all().update({obj.__class__.__name__ + '.' + obj.id: obj})
+        self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
 
     def save(self):
         """Saves storage dictionary to file"""

@@ -15,18 +15,19 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     if (db == 'db'):
         cities = relationship("City", back_populates="state")
-    elif (db == 'FileStorage'):
+    else:
+        # print("Running on file storage")
         @property
         def cities(self):
             """Getter for cities in a State"""
             from models import storage
+            # print("Running state getter")
             list = storage.all(cls='City')
-            temp = []
+            # print(list)
             result = []
             # DEBUG PRINTING TAKE NOTICE OF THE LINES BELOW
             # POSSIBLE ERROR
-            print(list)
-            for key, value in list.items:
-                temp.append(str(value))
-            result = [x for x in temp if x.state2_id == self.id]
+            for key, value in list.items():
+                if (value.state_id == self.id):
+                    result.append(value)
             return result
