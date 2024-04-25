@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """This module defines a class that handles python DB storage"""
 from sqlalchemy import create_engine, MetaData
 import configparser
