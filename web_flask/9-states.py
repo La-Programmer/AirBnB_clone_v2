@@ -34,7 +34,11 @@ def state(id):
         if (value.id == id):
             state = value
             found = True
-    return render_template('9-states.html', states=states, id=id, found=found, state=state)
+    return render_template('9-states.html',
+                           states=states,
+                           id=id,
+                           found=found,
+                           state=state)
 
 
 if __name__ == "__main__":
